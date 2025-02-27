@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Hooje | Dólar",
-  description: "Cotação do Dólar hoje para Real",
+  title: "Hooje | Euro",
+  description: "Cotação do Euro hoje para Real",
 };
 
 export default function RootLayout({
