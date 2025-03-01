@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Hooje | Euro",
+  title: "Hoooje | Euro",
   description: "Cotação do Euro hoje para Real",
 };
 
