@@ -10,7 +10,7 @@ export default async function Litecoin() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Litecoin</b> em Real hoje é
+        A cotação do <b>Litecoin</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

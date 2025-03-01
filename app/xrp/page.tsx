@@ -10,7 +10,7 @@ export default async function XRP() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>XRP</b> em Real hoje é
+        A cotação do <b>XRP</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

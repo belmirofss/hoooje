@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lato, Honk } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const latoSans = Lato({
+  variable: "--font-lato-sans",
   subsets: ["latin"],
+  weight: ["100", "300", "400", "700", "900"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const honkSans = Honk({
+  variable: "--font-honk-sans",
   subsets: ["latin"],
 });
 
@@ -24,11 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${latoSans.variable} ${honkSans.variable} antialiased`}>
         <div className="h-full w-full flex flex-row justify-center p-6">
-          <main className="w-full md:max-w-lg flex-1">{children}</main>
+          <main className="w-full md:max-w-lg flex flex-col">
+            <span className={`${honkSans.className} text-4xl`}>Hoooje</span>
+            {children}
+          </main>
         </div>
       </body>
     </html>

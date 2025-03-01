@@ -10,7 +10,7 @@ export default async function FrancoSuico() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Franco Suiço</b> em Real hoje é
+        A cotação do <b>Franco Suiço</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

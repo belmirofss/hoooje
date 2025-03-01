@@ -10,7 +10,7 @@ export default async function PesoArgentino() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Peso Argentino</b> em Real hoje é
+        A cotação do <b>Peso Argentino</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

@@ -5,5 +5,5 @@ type Props = {
 };
 
 export const Page = ({ children }: Props) => {
-  return <div className="h-full flex flex-col justify-center">{children}</div>;
+  return <div className="flex flex-1 flex-col justify-center">{children}</div>;
 };

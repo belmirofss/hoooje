@@ -10,7 +10,7 @@ export default async function Euro() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Euro</b> em Real hoje é
+        A cotação do <b>Euro</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

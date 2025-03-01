@@ -10,7 +10,7 @@ export default async function Libra() {
   return (
     <Page>
       <Title>
-        A cotaçâo da <b>Libra</b> em Real hoje é
+        A cotação da <b>Libra</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

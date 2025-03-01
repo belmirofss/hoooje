@@ -10,7 +10,7 @@ export default async function EuroDolar() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Euro</b> em Dólar hoje é
+        A cotação do <b>Euro</b> em Dólar hoje é
       </Title>
       <Value>{formatCurrencyUSD(response.ask)}</Value>
     </Page>

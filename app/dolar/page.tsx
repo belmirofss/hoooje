@@ -10,7 +10,7 @@ export default async function Dolar() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Dólar</b> em Real hoje é
+        A cotação do <b>Dólar</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

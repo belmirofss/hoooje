@@ -10,7 +10,7 @@ export default async function Ethereum() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Ethereum</b> em Real hoje é
+        A cotação do <b>Ethereum</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

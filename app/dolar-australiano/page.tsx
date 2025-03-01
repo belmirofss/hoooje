@@ -10,7 +10,7 @@ export default async function DolarAustraliano() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Dólar Australiano</b> em Real hoje é
+        A cotação do <b>Dólar Australiano</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask)}</Value>
     </Page>

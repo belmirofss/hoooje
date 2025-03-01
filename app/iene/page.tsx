@@ -10,7 +10,7 @@ export default async function Iene() {
   return (
     <Page>
       <Title>
-        A cotaçâo do <b>Iene</b> em Real hoje é
+        A cotação do <b>Iene</b> em Real hoje é
       </Title>
       <Value>{formatCurrencyBRL(response.ask, 4)}</Value>
     </Page>
