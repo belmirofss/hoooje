@@ -18,6 +18,18 @@ export const CADUSD = "CAD-USD";
 export const JPYUSD = "JPY-USD";
 export const CHFUSD = "CHF-USD";
 export const AUDUSD = "AUD-USD";
+export const CNYUSD = "CNY-USD";
+export const BTCUSD = "BTC-USD";
+export const LTCUSD = "LTC-USD";
+export const ETHUSD = "ETH-USD";
+export const XRPUSD = "XRP-USD";
+export const BRLUSD = "BRL-USD";
+export const BRLEUR = "BRL-EUR";
+export const USDEUR = "USD-EUR";
+export const GBPEUR = "GBP-EUR";
+export const BTCEUR = "BTC-EUR";
+export const LTCEUR = "LTC-EUR";
+export const ETHEUR = "ETH-EUR";
 
 export const fetchCurrency = async (
   currency:
@@ -41,6 +53,18 @@ export const fetchCurrency = async (
     | typeof JPYUSD
     | typeof CHFUSD
     | typeof AUDUSD
+    | typeof CNYUSD
+    | typeof BTCUSD
+    | typeof LTCUSD
+    | typeof ETHUSD
+    | typeof XRPUSD
+    | typeof BRLUSD
+    | typeof BRLEUR
+    | typeof USDEUR
+    | typeof GBPEUR
+    | typeof BTCEUR
+    | typeof LTCEUR
+    | typeof ETHEUR
 ) => {
   const response = await fetch(
     `https://economia.awesomeapi.com.br/last/${currency}`,
