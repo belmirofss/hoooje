@@ -30,6 +30,50 @@ export const GBPEUR = "GBP-EUR";
 export const BTCEUR = "BTC-EUR";
 export const LTCEUR = "LTC-EUR";
 export const ETHEUR = "ETH-EUR";
+export const DKKBRL = "DKK-BRL";
+export const HKDBRL = "HKD-BRL";
+export const RUBBRL = "RUB-BRL";
+export const MXNBRL = "MXN-BRL";
+export const JPYEUR = "JPY-EUR";
+export const XRPEUR = "XRP-EUR";
+export const DOGEBRL = "DOGE-BRL";
+export const DOGEEUR = "DOGE-EUR";
+export const DOGEUSD = "DOGE-USD";
+export const BRLGBP = "BRL-GBP";
+export const NOKBRL = "NOK-BRL";
+export const SOLUSD = "SOL-USD";
+export const NZDBRL = "NZD-BRL";
+export const SARBRL = "SAR-BRL";
+export const XAGUSD = "XAG-USD";
+export const PLNBRL = "PLN-BRL";
+export const SEKBRL = "SEK-BRL";
+export const THBBRL = "THB-BRL";
+export const TRYBRL = "TRY-BRL";
+export const TWDBRL = "TWD-BRL";
+export const VEFBRL = "VEF-BRL";
+export const ZARBRL = "ZAR-BRL";
+export const CLPBRL = "CLP-BRL";
+export const PYGBRL = "PYG-BRL";
+export const UYUBRL = "UYU-BRL";
+export const COPBRL = "COP-BRL";
+export const PENBRL = "PEN-BRL";
+export const BOBBRL = "BOB-BRL";
+export const INRBRL = "INR-BRL";
+export const EURGBP = "EUR-GBP";
+export const RUBEUR = "RUB-EUR";
+export const RUBUSD = "RUB-USD";
+export const XAGEUR = "XAG-EUR";
+export const XAUUSD = "XAU-USD";
+export const XAUEUR = "XAU-EUR";
+export const XAUBRL = "XAU-BRL";
+export const XAGBRL = "XAG-BRL";
+export const RSDBRL = "RSD-BRL";
+export const KRWBRL = "KRW-BRL";
+export const SOLBRL = "SOL-BRL";
+export const SOLEUR = "SOL-EUR";
+export const BNBBRL = "BNB-BRL";
+export const BNBUSD = "BNB-USD";
+export const BNBEUR = "BNB-EUR";
 
 export const fetchCurrency = async (
   currency:
@@ -65,6 +109,50 @@ export const fetchCurrency = async (
     | typeof BTCEUR
     | typeof LTCEUR
     | typeof ETHEUR
+    | typeof DKKBRL
+    | typeof HKDBRL
+    | typeof RUBBRL
+    | typeof MXNBRL
+    | typeof JPYEUR
+    | typeof XRPEUR
+    | typeof DOGEBRL
+    | typeof DOGEEUR
+    | typeof DOGEUSD
+    | typeof BRLGBP
+    | typeof NOKBRL
+    | typeof SOLUSD
+    | typeof NZDBRL
+    | typeof SARBRL
+    | typeof XAGUSD
+    | typeof PLNBRL
+    | typeof SEKBRL
+    | typeof THBBRL
+    | typeof TRYBRL
+    | typeof TWDBRL
+    | typeof VEFBRL
+    | typeof ZARBRL
+    | typeof CLPBRL
+    | typeof PYGBRL
+    | typeof UYUBRL
+    | typeof COPBRL
+    | typeof PENBRL
+    | typeof BOBBRL
+    | typeof INRBRL
+    | typeof EURGBP
+    | typeof RUBEUR
+    | typeof RUBUSD
+    | typeof XAGEUR
+    | typeof XAUUSD
+    | typeof XAUEUR
+    | typeof XAUBRL
+    | typeof XAGBRL
+    | typeof RSDBRL
+    | typeof KRWBRL
+    | typeof SOLBRL
+    | typeof SOLEUR
+    | typeof BNBBRL
+    | typeof BNBUSD
+    | typeof BNBEUR
 ) => {
   const response = await fetch(
     `https://economia.awesomeapi.com.br/last/${currency}`,
