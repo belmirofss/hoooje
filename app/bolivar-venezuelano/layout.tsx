@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Hoooje | Bolívar Venezuelano",
   description: "Cotação do Bolívar Venezuelano hoje para Real",
+  keywords: ["cotação", "bolívar venezuelano", "real", "câmbio", "venezuela"],
 };
 
 export default function RootLayout({

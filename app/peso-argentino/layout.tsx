@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Hoooje | Peso Argentino",
   description: "Cotação do Peso Argentino hoje para Real",
+  keywords: ["cotação", "peso argentino", "real", "câmbio", "argentina"],
 };
 
 export default function RootLayout({

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Hoooje | Ethereum para Euro",
   description: "Cotação do Ethereum hoje para Euro",
+  keywords: ["cotação", "ethereum", "euro", "criptomoeda", "câmbio"],
 };
 
 export default function RootLayout({
