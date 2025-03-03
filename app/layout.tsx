@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className={`${latoSans.variable} ${honkSans.variable} antialiased`}>
         <div className="h-full w-full flex flex-row justify-center p-6">
           <main className="w-full md:max-w-lg flex flex-col">
-            <span className={`${honkSans.className} text-4xl`}>H</span>
+            <span className={`${honkSans.className} text-4xl`}>HOOOJE</span>
             {children}
           </main>
         </div>
