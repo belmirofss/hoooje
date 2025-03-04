@@ -74,6 +74,7 @@ export const SOLEUR = "SOL-EUR";
 export const BNBBRL = "BNB-BRL";
 export const BNBUSD = "BNB-USD";
 export const BNBEUR = "BNB-EUR";
+export const USDGBP = "USD-GBP";
 
 export const fetchCurrency = async (
   currency:
@@ -153,6 +154,7 @@ export const fetchCurrency = async (
     | typeof BNBBRL
     | typeof BNBUSD
     | typeof BNBEUR
+    | typeof USDGBP
 ) => {
   const response = await fetch(
     `https://economia.awesomeapi.com.br/last/${currency}`,
