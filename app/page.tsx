@@ -21,7 +21,7 @@ export default function Home() {
         <Link href="/baht-tailandes">Baht Tailandês para Real</Link>
         <Link href="/bolivar-venezuelano">Bolívar Venezuelano para Real</Link>
         <Link href="/boliviano">Boliviano para Real</Link>
-        <Link href="/coroa-dinamarqueza">Coroa Dinamarqueza para Real</Link>
+        <Link href="/coroa-dinamarquesa">Coroa Dinamarquesa para Real</Link>
         <Link href="/coroa-norueguesa">Coroa Norueguesa para Real</Link>
         <Link href="/coroa-sueca">Coroa Sueca para Real</Link>
         <Link href="/dinar-servio">Dinar Sérvio para Real</Link>
