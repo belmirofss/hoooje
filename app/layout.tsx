@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     "câmbio",
     "taxas",
   ],
+  other: {
+    "google-adsense-account": process.env.PUBLISHER_ID || "",
+  },
 };
 
 export default async function RootLayout({
