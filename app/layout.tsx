@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lato, Honk } from "next/font/google";
 import "./globals.css";
+import { AdSense } from "./shared/components/AdSense";
 
 const latoSans = Lato({
   variable: "--font-lato-sans",
@@ -42,6 +43,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        <AdSense />
+      </head>
       <body className={`${latoSans.variable} ${honkSans.variable} antialiased`}>
         <div className="h-full w-full flex flex-row justify-center p-6">
           <main className="w-full md:max-w-xl flex flex-col">
