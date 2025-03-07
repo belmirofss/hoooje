@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lato, Honk } from "next/font/google";
 import "./globals.css";
 import { AdSense } from "./shared/components/AdSense";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const latoSans = Lato({
   variable: "--font-lato-sans",
@@ -57,6 +58,7 @@ export default async function RootLayout({
           </main>
         </div>
       </body>
+      <GoogleAnalytics gaId={process.env.G_ID || ""} />
     </html>
   );
 }
