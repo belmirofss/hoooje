@@ -16,9 +16,9 @@ const honkSans = Honk({
 });
 
 export const metadata: Metadata = {
-  title: "Hoooje",
+  title: "Hoooje - Cotações de moedas e criptomoedas",
   description:
-    "Cotações atualizadas de moedas e criptomoedas, como Dólar, Euro, Libra, Bitcoin, Ethereum, entre várias outras. Preços de ouro e prata. Também acompanhe as taxas econômicas, como a taxa Selic e a inflação.",
+    "Cotações atualizadas de moedas e criptomoedas. Acompanhe o Dólar, Euro, Bitcoin, Ethereum e taxas econômicas como Selic e inflação.",
   keywords: [
     "cotação",
     "moeda",
@@ -37,6 +37,9 @@ export const metadata: Metadata = {
   ],
   other: {
     "google-adsense-account": process.env.PUBLISHER_ID || "",
+  },
+  alternates: {
+    canonical: "./",
   },
 };
 

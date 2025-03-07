@@ -3,6 +3,10 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex flex-col gap-12 py-8">
+      <h1 className="font-bold text-lg">
+        Cotações de moedas e criptomoedas. Acompanhe o Dólar, Euro, Libra,
+        Bitcoin, Ethereum e entre várias outras. Preços do ouro e prata.
+      </h1>
       <div className="flex flex-col gap-4">
         <h2 className="font-bold text-lg">Mais populares</h2>
         <Link href="/dolar">Dólar para Real</Link>
