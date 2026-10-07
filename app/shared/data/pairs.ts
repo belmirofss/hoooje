@@ -1276,3 +1276,12 @@ export const relatedPairs = (pair: Pair, limit = 4) => {
     .sort((a, b) => b.priority - a.priority);
   return [...sameName, ...sameCategory].slice(0, limit);
 };
+
+// "USD/BRL"; the turismo quote is still against the Real.
+export const pairSymbol = (pair: Pair) => `${baseCode(pair)}/${pair.quote}`;
+
+export const pairTitle = (pair: Pair) =>
+  `Cotação ${pair.article} ${pair.name} hoje em ${QUOTE_NAMES[pair.quote]} (${pairSymbol(pair)})`;
+
+export const pairDescription = (pair: Pair) =>
+  `${pair.name} hoje: cotação ${pair.article} ${pair.name} em ${QUOTE_NAMES[pair.quote]} atualizada a cada minuto, com compra, venda, variação do dia, histórico e conversor ${pairSymbol(pair)}.`;

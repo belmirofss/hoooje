@@ -1,7 +1,7 @@
 "use client";
 
 import type { QuoteCurrency } from "../data/pairs";
-import { formatQuote, formatTime } from "../helpers/formatQuote";
+import { formatNumber, formatQuote, formatTime } from "../helpers/formatQuote";
 import { Converter } from "./Converter";
 import { useQuote, useQuotesLoading } from "./LiveQuotes";
 import { ChangePill } from "./QuoteCard";
@@ -38,6 +38,31 @@ export const QuoteHeadline = ({ code, currency, decimals }: Props) => {
         (Brasília)
       </p>
     </>
+  );
+};
+
+// Plain-language recap of the numbers; it's what search snippets pick up.
+export const QuoteSummary = ({
+  code,
+  currency,
+  decimals,
+  name,
+}: Props & { name: string }) => {
+  const quote = useQuote(code);
+  if (!quote) return null;
+
+  const fmt = (value: string) => formatQuote(value, currency, decimals);
+  const pct = Number(quote.pctChange);
+  const change = pct
+    ? `${pct > 0 ? "alta" : "queda"} de ${formatNumber(Math.abs(pct))}% no dia`
+    : "estável no dia";
+
+  return (
+    <p className="text-lg leading-relaxed">
+      Hoje, 1 {name} vale {fmt(quote.ask)} na venda e {fmt(quote.bid)} na
+      compra, {change}. A máxima foi de {fmt(quote.high)} e a mínima, de{" "}
+      {fmt(quote.low)}.
+    </p>
   );
 };
 

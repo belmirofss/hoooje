@@ -1,13 +1,9 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL, pairs } from "./shared/data/pairs";
+import { SITE_URL } from "./shared/data/pairs";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: ["/", ...pairs.map((pair) => `/${pair.slug}`)],
-      disallow: [],
-    },
+    rules: { userAgent: "*", allow: "/" },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

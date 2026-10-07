@@ -3,21 +3,30 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { fetchHistory, fetchQuotes } from "../shared/api/fetchCurrency";
 import { HistoryChart } from "../shared/components/HistoryChart";
+import { JsonLd } from "../shared/components/JsonLd";
 import { QuotesProvider } from "../shared/components/LiveQuotes";
 import { Badge, QuoteCard } from "../shared/components/QuoteCard";
-import { QuoteHeadline, QuoteSidebar } from "../shared/components/QuoteDetails";
+import {
+  QuoteHeadline,
+  QuoteSidebar,
+  QuoteSummary,
+} from "../shared/components/QuoteDetails";
 import {
   CATEGORY_LABELS,
   Pair,
   QUOTE_NAMES,
+  SITE_URL,
   baseCode,
   badgeColor,
   badgeSymbol,
   getPair,
+  pairDescription,
+  pairTitle,
   pairs,
   relatedPairs,
 } from "../shared/data/pairs";
 import { toQuoteItem } from "../shared/data/quoteItems";
+import { pageMetadata } from "../shared/helpers/pageMetadata";
 
 export const revalidate = 60;
 export const dynamicParams = false;
@@ -31,7 +40,15 @@ export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
   const pair = getPair((await params).slug);
-  return pair ? pair.meta : {};
+  if (!pair) return {};
+  return {
+    ...pageMetadata({
+      title: pairTitle(pair),
+      description: pairDescription(pair),
+      path: `/${pair.slug}`,
+    }),
+    keywords: pair.meta.keywords,
+  };
 };
 
 const QUOTE_SYMBOLS = { BRL: "R$", USD: "US$", EUR: "€", GBP: "£" };
@@ -52,12 +69,14 @@ export default async function QuotePage({ params }: Props) {
     currency: pair.quote,
     decimals: pair.decimals,
   };
+  const questions = faq(pair);
 
   return (
     <QuotesProvider
       initial={Object.fromEntries(codes.map((code) => [code, quotes[code]]))}
       codes={codes}
     >
+      <JsonLd data={structuredData(pair, questions)} />
       <div className="mx-auto flex max-w-6xl flex-col gap-7 px-4 pt-2 sm:px-8">
         <nav aria-label="Trilha" className="text-[15px] font-semibold">
           <Link href="/" className="underline">
@@ -106,6 +125,7 @@ export default async function QuotePage({ params }: Props) {
                 em {quoteName} hoje é
               </h1>
               <QuoteHeadline {...live} />
+              <QuoteSummary {...live} name={pair.name} />
             </section>
 
             <section className="flex flex-col gap-4 rounded-[26px] border-[2.5px] border-ink bg-white p-6 shadow-pop-lg">
@@ -144,7 +164,7 @@ export default async function QuotePage({ params }: Props) {
         ) : null}
 
         <section className="rounded-[26px] border-[2.5px] border-ink bg-white px-6 py-2 sm:px-7">
-          {faq(pair).map(({ question, answer }) => (
+          {questions.map(({ question, answer }) => (
             <details
               key={question}
               className="group border-b-2 border-ink py-4 last:border-0"
@@ -198,3 +218,33 @@ const faq = (pair: Pair) => {
   });
   return items;
 };
+
+// Breadcrumb and FAQ markup mirroring what the page shows.
+const structuredData = (
+  pair: Pair,
+  questions: { question: string; answer: string }[]
+) => ({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: `${pair.name} → ${QUOTE_NAMES[pair.quote]}`,
+          item: `${SITE_URL}/${pair.slug}`,
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: questions.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
+    },
+  ],
+});
