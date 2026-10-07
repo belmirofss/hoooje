@@ -1,13 +1,30 @@
+import type { Metadata } from "next";
 import { fetchQuotes } from "./shared/api/fetchCurrency";
+import { JsonLd } from "./shared/components/JsonLd";
 import { QuotesProvider } from "./shared/components/LiveQuotes";
 import { Sticker } from "./shared/components/QuoteCard";
 import { QuoteGrid } from "./shared/components/QuoteGrid";
 import { SearchBox } from "./shared/components/SearchBox";
-import { pairLabel, pairs } from "./shared/data/pairs";
+import { SITE_URL, pairLabel, pairs } from "./shared/data/pairs";
 import { toQuoteItem } from "./shared/data/quoteItems";
 import { formatTime, formatToday } from "./shared/helpers/formatQuote";
+import { pageMetadata } from "./shared/helpers/pageMetadata";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = pageMetadata({
+  title: { absolute: "Cotação do dólar, euro e bitcoin hoje | Hoooje" },
+  description: `Cotação do dólar, euro, libra, bitcoin, ouro e mais ${pairs.length - 5} moedas, criptomoedas e metais, atualizada a cada minuto. Veja compra, venda, variação, histórico e use o conversor.`,
+  path: "/",
+});
+
+const WEBSITE = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Hoooje",
+  url: SITE_URL,
+  inLanguage: "pt-BR",
+};
 
 const STICKERS = [
   { slug: "dolar", className: "left-0 top-0 md:w-[270px] -rotate-3 bg-white" },
@@ -37,6 +54,7 @@ export default async function Home() {
 
   return (
     <QuotesProvider initial={quotes} codes={CODES}>
+      <JsonLd data={WEBSITE} />
       <section className="mx-auto flex max-w-6xl flex-wrap items-center gap-12 px-4 pt-6 pb-14 sm:px-8">
         <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-6">
           <span className="self-start rounded-full bg-ink px-3.5 py-1.5 text-sm font-semibold text-pop-yellow">

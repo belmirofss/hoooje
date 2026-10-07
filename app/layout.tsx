@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Honk } from "next/font/google";
 import "./globals.css";
 import { AdSense } from "./shared/components/AdSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Header } from "./shared/components/Header";
 import { Footer } from "./shared/components/Footer";
+import { SITE_URL } from "./shared/data/pairs";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -18,31 +19,19 @@ const honk = Honk({
 });
 
 export const metadata: Metadata = {
-  title: "Hoooje - Cotações de moedas e criptomoedas",
-  description:
-    "Cotações atualizadas de moedas e criptomoedas. Acompanhe o Dólar, Euro, Bitcoin, Ethereum e taxas econômicas como Selic e inflação.",
-  keywords: [
-    "cotação",
-    "moeda",
-    "criptomoeda",
-    "ouro",
-    "prata",
-    "taxa selic",
-    "inflação",
-    "dólar",
-    "euro",
-    "libra",
-    "bitcoin",
-    "ethereum",
-    "câmbio",
-    "taxas",
-  ],
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Hoooje", template: "%s | Hoooje" },
+  twitter: { card: "summary_large_image" },
+  verification: {
+    google: "foN4mwW-WqNyO7KYHx3nqmP8AZ_6Q2S3j-l-FH3xIb4",
+  },
   other: {
     "google-adsense-account": process.env.PUBLISHER_ID || "",
   },
-  alternates: {
-    canonical: "./",
-  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffe45e",
 };
 
 export default async function RootLayout({

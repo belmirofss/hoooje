@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { pairLabel, pairs } from "../data/pairs";
+
+const POPULAR = pairs.filter((pair) => pair.popular);
 
 export const Footer = () => {
   return (
@@ -8,9 +11,19 @@ export const Footer = () => {
           HOOOJE
         </Link>
         <p className="max-w-lg text-[15px] text-neutral-300">
-          Dados da AwesomeAPI, atualizados a cada minuto. Valores de
-          referência.
+          Dados da AwesomeAPI, atualizados a cada minuto. Valores de referência.
         </p>
+        <nav aria-label="Cotações mais buscadas" className="w-full">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[15px] text-neutral-300">
+            {POPULAR.map((pair) => (
+              <li key={pair.slug}>
+                <Link href={`/${pair.slug}`} className="hover:text-white">
+                  {pairLabel(pair)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </footer>
   );
