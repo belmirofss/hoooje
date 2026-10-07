@@ -3,6 +3,12 @@ Link: https://hoooje.vercel.app/
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Quotes
+
+Quotes come from [AwesomeAPI](https://docs.awesomeapi.com.br/), which rate-limits callers without a key per IP. Vercel's IPs are shared, so server requests often get HTTP 429. Pages still render on the server when they can (good for SEO), and the visitor's browser, which has its own limit, fills in whatever is missing and refreshes the quotes every minute.
+
+An AwesomeAPI key is optional: set `AWESOMEAPI_TOKEN` to send it from the server.
+
 ## Getting Started
 
 First, run the development server:

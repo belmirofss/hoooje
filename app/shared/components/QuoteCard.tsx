@@ -1,16 +1,31 @@
+"use client";
+
 import Link from "next/link";
-import type { Category } from "../data/pairs";
+import type { Category, QuoteCurrency } from "../data/pairs";
 import { formatPercent } from "../helpers/formatPercent";
+import { formatQuote } from "../helpers/formatQuote";
+import { useQuote } from "./LiveQuotes";
 
 export type QuoteItem = {
   slug: string;
+  code: string;
   name: string;
   quoteName: string;
+  currency: QuoteCurrency;
+  decimals: number;
   category: Category;
   symbol: string;
   color: string;
-  value: string | null;
-  pct: number | null;
+};
+
+const useLiveValue = (item: QuoteItem) => {
+  const quote = useQuote(item.code);
+  return quote
+    ? {
+        value: formatQuote(quote.ask, item.currency, item.decimals),
+        pct: Number(quote.pctChange),
+      }
+    : { value: null, pct: null };
 };
 
 export const Badge = ({
@@ -60,23 +75,51 @@ export const ChangePill = ({
 };
 
 // Compact list row on phones, stacked card from sm up.
-export const QuoteCard = ({ item }: { item: QuoteItem }) => (
-  <Link
-    href={`/${item.slug}`}
-    className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-2xl border-[2.5px] border-ink bg-white px-3.5 py-3 shadow-pop-sm transition [grid-template-areas:'badge_name_value'_'badge_name_pill'] hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-pop-hover sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-y-3 sm:rounded-[20px] sm:p-5 sm:shadow-pop sm:[grid-template-areas:'badge_pill'_'name_name'_'value_value']"
-  >
-    <span className="[grid-area:badge]">
-      <Badge symbol={item.symbol} color={item.color} />
-    </span>
-    <ChangePill
-      pct={item.pct}
-      className="justify-self-end text-[13px] [grid-area:pill] max-sm:bg-transparent max-sm:p-0 sm:text-sm"
-    />
-    <span className="font-bold [grid-area:name] sm:font-semibold sm:text-neutral-700">
-      {item.name} → {item.quoteName}
-    </span>
-    <span className="justify-self-end text-lg leading-tight font-extrabold tracking-tight break-words [grid-area:value] sm:justify-self-start sm:text-[28px]">
-      {item.value ?? "—"}
-    </span>
-  </Link>
-);
+export const QuoteCard = ({ item }: { item: QuoteItem }) => {
+  const { value, pct } = useLiveValue(item);
+  return (
+    <Link
+      href={`/${item.slug}`}
+      className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-2xl border-[2.5px] border-ink bg-white px-3.5 py-3 shadow-pop-sm transition [grid-template-areas:'badge_name_value'_'badge_name_pill'] hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-pop-hover sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-y-3 sm:rounded-[20px] sm:p-5 sm:shadow-pop sm:[grid-template-areas:'badge_pill'_'name_name'_'value_value']"
+    >
+      <span className="[grid-area:badge]">
+        <Badge symbol={item.symbol} color={item.color} />
+      </span>
+      <ChangePill
+        pct={pct}
+        className="justify-self-end text-[13px] [grid-area:pill] max-sm:bg-transparent max-sm:p-0 sm:text-sm"
+      />
+      <span className="font-bold [grid-area:name] sm:font-semibold sm:text-neutral-700">
+        {item.name} → {item.quoteName}
+      </span>
+      <span className="justify-self-end text-lg leading-tight font-extrabold tracking-tight break-words [grid-area:value] sm:justify-self-start sm:text-[28px]">
+        {value ?? "—"}
+      </span>
+    </Link>
+  );
+};
+
+export const Sticker = ({
+  item,
+  className,
+}: {
+  item: QuoteItem;
+  className: string;
+}) => {
+  const { value, pct } = useLiveValue(item);
+  return (
+    <Link
+      href={`/${item.slug}`}
+      className={`w-[250px] shrink-0 snap-start rounded-[22px] border-[2.5px] border-ink p-5 shadow-pop transition hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-pop-hover max-md:rotate-0 md:absolute md:p-6 ${className}`}
+    >
+      <Badge symbol={item.symbol} color={item.color} size="lg" />
+      <span className="mt-3 block text-lg font-semibold">
+        {item.name} → {item.quoteName}
+      </span>
+      <span className="block text-4xl leading-tight font-extrabold tracking-[-0.03em] whitespace-nowrap">
+        {value ?? "—"}
+      </span>
+      <ChangePill pct={pct} suffix=" hoje" className="mt-2 text-[15px]" />
+    </Link>
+  );
+};

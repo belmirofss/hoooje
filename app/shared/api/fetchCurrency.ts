@@ -1,83 +1,61 @@
-const API_URL =
-  process.env.QUOTES_API_URL || "https://economia.awesomeapi.com.br";
+import { unstable_cache } from "next/cache";
+import { pairs } from "../data/pairs";
+import {
+  API_URL,
+  ApiError,
+  chunk,
+  fetchBatch,
+  historyPath,
+  toHistory,
+  type HistoryPoint,
+  type Quotes,
+} from "./quotes";
 
-const BATCH_SIZE = 20;
+// Optional. Without a key AwesomeAPI rate-limits per IP and Vercel's IPs are
+// shared, so server calls can get HTTP 429; the browser then fills the gaps.
+const API_TOKEN = process.env.AWESOMEAPI_TOKEN;
 
-export type Quote = {
-  code: string;
-  codein: string;
-  name: string;
-  high: string;
-  low: string;
-  varBid: string;
-  pctChange: string;
-  bid: string;
-  ask: string;
-  timestamp: string;
-  create_date: string;
-};
+// A free key gets 100k requests a month. At most 4 quote batches every 2
+// minutes plus each pair's history every 6 hours stays under that; the
+// browser refreshes the quotes every minute on its own quota anyway.
+const QUOTES_TTL = 120;
+const HISTORY_TTL = 6 * 60 * 60;
 
-export type HistoryPoint = { time: number; value: number };
+// Every page reads the same batches of every pair, so they are fetched a
+// handful of times per minute instead of once per page.
+const BATCHES = chunk(pairs.map((pair) => pair.code));
 
-const responseKey = (code: string) => code.replace("-", "");
-
-const getJson = async (path: string, revalidate: number) => {
-  const response = await fetch(`${API_URL}${path}`, { next: { revalidate } });
-  if (!response.ok) throw new Error(`${response.status} on ${path}`);
+const getJson = (revalidate: number) => async (path: string) => {
+  const response = await fetch(`${API_URL}${path}`, {
+    headers: API_TOKEN ? { "x-api-key": API_TOKEN } : undefined,
+    next: { revalidate },
+  });
+  if (!response.ok) {
+    const error = new ApiError(response.status, path);
+    console.error(`AwesomeAPI: ${error.message}`);
+    throw error;
+  }
   return response.json();
 };
 
-export const fetchCurrency = async (code: string): Promise<Quote | null> => {
+let pending: Promise<Quotes> | null = null;
+
+// Cached as a whole so a failing batch (only successful fetches are cached)
+// isn't retried by every page render, and concurrent misses share one load.
+export const fetchQuotes = unstable_cache(
+  () =>
+    (pending ??= Promise.all(
+      BATCHES.map((batch) => fetchBatch(getJson(QUOTES_TTL), batch))
+    )
+      .then((results) => Object.fromEntries(results.flat()))
+      .finally(() => (pending = null))),
+  ["quotes"],
+  { revalidate: QUOTES_TTL }
+);
+
+export const fetchHistory = async (code: string): Promise<HistoryPoint[]> => {
   try {
-    const data = await getJson(`/last/${code}`, 60);
-    return data[responseKey(code)] ?? null;
-  } catch {
-    return null;
-  }
-};
-
-export const fetchCurrencies = async (
-  codes: string[]
-): Promise<Record<string, Quote | null>> => {
-  const unique = [...new Set(codes)];
-  const batches: string[][] = [];
-  for (let i = 0; i < unique.length; i += BATCH_SIZE) {
-    batches.push(unique.slice(i, i + BATCH_SIZE));
-  }
-
-  const results = await Promise.all(
-    batches.map(async (batch) => {
-      try {
-        const data = await getJson(`/last/${batch.join(",")}`, 60);
-        return batch.map((code) => [code, data[responseKey(code)] ?? null]);
-      } catch {
-        // One unknown pair fails the whole batch, so fall back to one by one.
-        return Promise.all(
-          batch.map(async (code) => [code, await fetchCurrency(code)])
-        );
-      }
-    })
-  );
-
-  return Object.fromEntries(results.flat());
-};
-
-export const fetchHistory = async (
-  code: string,
-  days = 360
-): Promise<HistoryPoint[]> => {
-  try {
-    const data: { bid: string; timestamp: string }[] = await getJson(
-      `/json/daily/${code}/${days}`,
-      3600
-    );
-    return data
-      .map((point) => ({
-        time: Number(point.timestamp) * 1000,
-        value: Number(point.bid),
-      }))
-      .filter((point) => Number.isFinite(point.value) && point.time > 0)
-      .sort((a, b) => a.time - b.time);
+    return toHistory(await getJson(HISTORY_TTL)(historyPath(code)));
   } catch {
     return [];
   }

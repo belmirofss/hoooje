@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { fetchCurrencies } from "./shared/api/fetchCurrency";
-import { Badge, ChangePill, QuoteItem } from "./shared/components/QuoteCard";
+import { fetchQuotes } from "./shared/api/fetchCurrency";
+import { QuotesProvider } from "./shared/components/LiveQuotes";
+import { Sticker } from "./shared/components/QuoteCard";
 import { QuoteGrid } from "./shared/components/QuoteGrid";
 import { SearchBox } from "./shared/components/SearchBox";
 import { pairLabel, pairs } from "./shared/data/pairs";
@@ -27,14 +27,16 @@ const ordered = [...pairs].sort(
   (a, b) => Number(!!b.popular) - Number(!!a.popular) || b.priority - a.priority
 );
 
+const CODES = ordered.map((pair) => pair.code);
+
 export default async function Home() {
-  const quotes = await fetchCurrencies(ordered.map((pair) => pair.code));
-  const items = ordered.map((pair) => toQuoteItem(pair, quotes[pair.code]));
+  const quotes = await fetchQuotes();
+  const items = ordered.map(toQuoteItem);
   const bySlug = Object.fromEntries(items.map((item) => [item.slug, item]));
   const updatedAt = quotes["USD-BRL"]?.timestamp;
 
   return (
-    <>
+    <QuotesProvider initial={quotes} codes={CODES}>
       <section className="mx-auto flex max-w-6xl flex-wrap items-center gap-12 px-4 pt-6 pb-14 sm:px-8">
         <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-6">
           <span className="self-start rounded-full bg-ink px-3.5 py-1.5 text-sm font-semibold text-pop-yellow">
@@ -72,28 +74,6 @@ export default async function Home() {
           <QuoteGrid items={items} />
         </div>
       </section>
-    </>
+    </QuotesProvider>
   );
 }
-
-const Sticker = ({
-  item,
-  className,
-}: {
-  item: QuoteItem;
-  className: string;
-}) => (
-  <Link
-    href={`/${item.slug}`}
-    className={`w-[250px] shrink-0 snap-start rounded-[22px] border-[2.5px] border-ink p-5 shadow-pop transition hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-pop-hover max-md:rotate-0 md:absolute md:p-6 ${className}`}
-  >
-    <Badge symbol={item.symbol} color={item.color} size="lg" />
-    <span className="mt-3 block text-lg font-semibold">
-      {item.name} → {item.quoteName}
-    </span>
-    <span className="block text-4xl leading-tight font-extrabold tracking-[-0.03em] whitespace-nowrap">
-      {item.value ?? "—"}
-    </span>
-    <ChangePill pct={item.pct} suffix=" hoje" className="mt-2 text-[15px]" />
-  </Link>
-);
