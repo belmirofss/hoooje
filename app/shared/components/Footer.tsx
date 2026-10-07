@@ -8,8 +8,8 @@ export const Footer = () => {
           HOOOJE
         </Link>
         <p className="max-w-lg text-[15px] text-neutral-300">
-          Dados da AwesomeAPI, atualizados a cada minuto. Valores de referência
-          — confira com seu banco ou corretora antes de operar.
+          Dados da AwesomeAPI, atualizados a cada minuto. Valores de
+          referência.
         </p>
       </div>
     </footer>
