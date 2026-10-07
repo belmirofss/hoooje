@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: { default: "Hoooje", template: "%s | Hoooje" },
   twitter: { card: "summary_large_image" },
   verification: {
-    google: process.env.GOOGLE_SITE_VERIFICATION,
+    google: "foN4mwW-WqNyO7KYHx3nqmP8AZ_6Q2S3j-l-FH3xIb4",
   },
   other: {
     "google-adsense-account": process.env.PUBLISHER_ID || "",
