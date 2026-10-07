@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import type { HistoryPoint } from "../api/fetchCurrency";
+import { useEffect, useState } from "react";
+import { historyPath, toHistory, type HistoryPoint } from "../api/quotes";
 import type { QuoteCurrency } from "../data/pairs";
 import { formatQuote } from "../helpers/formatQuote";
 import { formatPercent } from "../helpers/formatPercent";
+import { browserJson } from "./LiveQuotes";
 
 const DAY = 24 * 60 * 60 * 1000;
 const WIDTH = 800;
@@ -26,17 +27,34 @@ const formatDate = (time: number) =>
   });
 
 export const HistoryChart = ({
-  points,
+  code,
+  points: initial,
   currency,
   decimals,
   name,
 }: {
+  code: string;
   points: HistoryPoint[];
   currency: QuoteCurrency;
   decimals: number;
   name: string;
 }) => {
   const [period, setPeriod] = useState("30D");
+  const [points, setPoints] = useState(initial);
+  const [loading, setLoading] = useState(!initial.length);
+
+  // The server may have been rate-limited; the browser has its own quota.
+  useEffect(() => {
+    if (initial.length) return;
+    let cancelled = false;
+    browserJson(historyPath(code))
+      .then((data) => !cancelled && setPoints(toHistory(data)))
+      .catch(() => {})
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [code, initial]);
   const days = PERIODS.find((item) => item.id === period)!.days;
   const last = points[points.length - 1];
   const visible = last
@@ -44,7 +62,13 @@ export const HistoryChart = ({
     : [];
 
   if (visible.length < 2) {
-    return <p className="text-muted">Histórico indisponível para este par.</p>;
+    return (
+      <p className="text-muted">
+        {loading
+          ? "Carregando histórico…"
+          : "Histórico indisponível para este par."}
+      </p>
+    );
   }
 
   const values = visible.map((point) => point.value);
