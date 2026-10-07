@@ -47,8 +47,7 @@ export default async function Home() {
             Quanto vale o seu dinheiro hoje?
           </h1>
           <p className="max-w-lg text-lg leading-relaxed sm:text-xl">
-            Dólar, Euro, Bitcoin, ouro e mais {pairs.length - 2} pares — cotação
-            atualizada a cada minuto, sem enrolação.
+            Cotação atualizada a cada minuto, sem enrolação.
           </p>
           <SearchBox
             entries={pairs.map((pair) => ({
