@@ -1,115 +1,99 @@
 import Link from "next/link";
+import { fetchCurrencies } from "./shared/api/fetchCurrency";
+import { Badge, ChangePill, QuoteItem } from "./shared/components/QuoteCard";
+import { QuoteGrid } from "./shared/components/QuoteGrid";
+import { SearchBox } from "./shared/components/SearchBox";
+import { pairLabel, pairs } from "./shared/data/pairs";
+import { toQuoteItem } from "./shared/data/quoteItems";
+import { formatTime, formatToday } from "./shared/helpers/formatQuote";
 
-export default function Home() {
+export const revalidate = 60;
+
+const STICKERS = [
+  { slug: "dolar", className: "left-0 top-0 md:w-[270px] -rotate-3 bg-white" },
+  {
+    slug: "euro",
+    className: "right-0 top-[40px] md:w-[240px] rotate-4 bg-pop-pink",
+  },
+  {
+    slug: "bitcoin",
+    className:
+      "left-[40px] bottom-0 md:w-[340px] rotate-[1.5deg] bg-ink text-white",
+  },
+];
+
+// Popular pairs first, then the rest by the priority they already had in the sitemap.
+const ordered = [...pairs].sort(
+  (a, b) => Number(!!b.popular) - Number(!!a.popular) || b.priority - a.priority
+);
+
+export default async function Home() {
+  const quotes = await fetchCurrencies(ordered.map((pair) => pair.code));
+  const items = ordered.map((pair) => toQuoteItem(pair, quotes[pair.code]));
+  const bySlug = Object.fromEntries(items.map((item) => [item.slug, item]));
+  const updatedAt = quotes["USD-BRL"]?.timestamp;
+
   return (
-    <div className="flex flex-col gap-12 py-8">
-      <h1 className="font-bold text-lg">
-        Cotações de moedas e criptomoedas. Acompanhe o Dólar, Euro, Libra,
-        Bitcoin, Ethereum e entre várias outras. Preços do ouro e prata.
-      </h1>
-      <div className="flex flex-col gap-4">
-        <h2 className="font-bold text-lg">Mais populares</h2>
-        <Link href="/dolar">Dólar para Real</Link>
-        <Link href="/euro">Euro para Real</Link>
-        <Link href="/libra">Libra para Real</Link>
-        <Link href="/bitcoin">Bitcoin para Real</Link>
-        <Link href="/bitcoin-dolar">Bitcoin para Dólar</Link>
-        <Link href="/ethereum">Ethereum para Real</Link>
-        <Link href="/ethereum-dolar">Ethereum para Dólar</Link>
-        <Link href="/ouro">Cotação Ouro em Real</Link>
-        <Link href="/prata">Cotação Prata em Real</Link>
-      </div>
+    <>
+      <section className="mx-auto flex max-w-6xl flex-wrap items-center gap-12 px-4 pt-6 pb-14 sm:px-8">
+        <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-6">
+          <span className="self-start rounded-full bg-ink px-3.5 py-1.5 text-sm font-semibold text-pop-yellow">
+            {formatToday()}
+            {updatedAt ? ` · atualizado às ${formatTime(updatedAt)}` : ""}
+          </span>
+          <h1 className="text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] sm:text-7xl">
+            Quanto vale o seu dinheiro hoje?
+          </h1>
+          <p className="max-w-lg text-lg leading-relaxed sm:text-xl">
+            Dólar, Euro, Bitcoin, ouro e mais {pairs.length - 2} pares — cotação
+            atualizada a cada minuto, sem enrolação.
+          </p>
+          <SearchBox
+            entries={pairs.map((pair) => ({
+              slug: pair.slug,
+              label: pairLabel(pair),
+            }))}
+          />
+        </div>
 
-      <div className="flex flex-col gap-4">
-        <h2 className="font-bold text-lg">Moedas</h2>
-        <Link href="/baht-tailandes">Baht Tailandês para Real</Link>
-        <Link href="/bolivar-venezuelano">Bolívar Venezuelano para Real</Link>
-        <Link href="/boliviano">Boliviano para Real</Link>
-        <Link href="/coroa-dinamarquesa">Coroa Dinamarquesa para Real</Link>
-        <Link href="/coroa-norueguesa">Coroa Norueguesa para Real</Link>
-        <Link href="/coroa-sueca">Coroa Sueca para Real</Link>
-        <Link href="/dinar-servio">Dinar Sérvio para Real</Link>
-        <Link href="/dolar">Dólar para Real</Link>
-        <Link href="/dolar-euro">Dólar para Euro</Link>
-        <Link href="/dolar-libra">Dólar para Libra</Link>
-        <Link href="/dolar-turismo">Dólar Turismo para Real</Link>
-        <Link href="/dolar-australiano">Dólar Australiano para Real</Link>
-        <Link href="/dolar-australiano-dolar">
-          Dólar Australiano para Dólar
-        </Link>
-        <Link href="/dolar-canadense">Dólar Canadense para Real</Link>
-        <Link href="/dolar-canadense-dolar">Dólar Canadense para Dólar</Link>
-        <Link href="/dolar-hong-kong">Dólar de Hong Kong para Real</Link>
-        <Link href="/dolar-neozelandes">Dólar Neozelandês para Real</Link>
-        <Link href="/dolar-taiuanes">Dólar Taiuanês para Real</Link>
-        <Link href="/euro">Euro para Real</Link>
-        <Link href="/euro-dolar">Euro para Dólar</Link>
-        <Link href="/euro-libra">Euro para Libra</Link>
-        <Link href="/franco-suico">Franco Suiço para Real</Link>
-        <Link href="/franco-suico-dolar">Franco Suiço para Dólar</Link>
-        <Link href="/guarani-paraguaio">Guarani Paraguaio para Real</Link>
-        <Link href="/iene">Iene para Real</Link>
-        <Link href="/iene-dolar">Iene para Dólar</Link>
-        <Link href="/iene-euro">Iene para Euro</Link>
-        <Link href="/libra">Libra para Real</Link>
-        <Link href="/libra-dolar">Libra para Dólar</Link>
-        <Link href="/libra-euro">Libra para Euro</Link>
-        <Link href="/nova-lira-turca">Nova Lira Turca para Real</Link>
-        <Link href="/peso-argentino">Peso Argentino para Real</Link>
-        <Link href="/peso-chileno">Peso Chileno para Real</Link>
-        <Link href="/peso-colombiano">Peso Colombiano para Real</Link>
-        <Link href="/peso-mexicano">Peso Mexicano para Real</Link>
-        <Link href="/peso-uruguaio">Peso Uruguaio para Real</Link>
-        <Link href="/rand-sul-africano">Rand Sul-Africano para Real</Link>
-        <Link href="/real-dolar">Real para Dólar</Link>
-        <Link href="/real-euro">Real para Euro</Link>
-        <Link href="/real-libra">Real para Libra</Link>
-        <Link href="/riyal-saudita">Riyal Saudita para Real</Link>
-        <Link href="/rublo">Rublo para Real</Link>
-        <Link href="/rublo-dolar">Rublo para Dólar</Link>
-        <Link href="/rublo-euro">Rublo para Euro</Link>
-        <Link href="/rupia-indiana">Rúpia Indiana para Real</Link>
-        <Link href="/sol-do-peru">Sol do Peru para Real</Link>
-        <Link href="/won-sul-coreano">Won Sul-Coreano para Real</Link>
-        <Link href="/yuan">Yuan para Real</Link>
-        <Link href="/yuan-dolar">Yuan para Dólar</Link>
-        <Link href="/zloti-polones">Zlóti Polonês para Real</Link>
-      </div>
+        {/* Mobile: swipeable row. Desktop: overlapping tilted stickers. */}
+        <div className="no-scrollbar -mx-4 flex min-w-0 flex-[1_1_100%] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:relative md:mx-0 md:block md:h-[540px] md:flex-[1_1_420px] md:overflow-visible md:px-0">
+          {STICKERS.map(({ slug, className }) => (
+            <Sticker key={slug} item={bySlug[slug]} className={className} />
+          ))}
+        </div>
+      </section>
 
-      <div className="flex flex-col gap-4">
-        <h2 className="font-bold text-lg">Criptomoedas</h2>
-        <Link href="/binance-coin">Binance Coin para Real</Link>
-        <Link href="/binance-coin-dolar">Binance Coin para Dólar</Link>
-        <Link href="/binance-coin-euro">Binance Coin para Euro</Link>
-        <Link href="/bitcoin">Bitcoin para Real</Link>
-        <Link href="/bitcoin-dolar">Bitcoin para Dólar</Link>
-        <Link href="/bitcoin-euro">Bitcoin para Euro</Link>
-        <Link href="/dogecoin">Dogecoin para Real</Link>
-        <Link href="/dogecoin-dolar">Dogecoin para Dólar</Link>
-        <Link href="/dogecoin-euro">Dogecoin para Euro</Link>
-        <Link href="/ethereum">Ethereum para Real</Link>
-        <Link href="/ethereum-dolar">Ethereum para Dólar</Link>
-        <Link href="/ethereum-euro">Ethereum para Euro</Link>
-        <Link href="/litecoin">Litecoin para Real</Link>
-        <Link href="/litecoin-dolar">Litecoin para Dólar</Link>
-        <Link href="/litecoin-euro">Litecoin para Euro</Link>
-        <Link href="/solana">Solana para Real</Link>
-        <Link href="/solana-dolar">Solana para Dólar</Link>
-        <Link href="/solana-euro">Solana para Euro</Link>
-        <Link href="/xrp">XRP para Real</Link>
-        <Link href="/xrp-dolar">XRP para Dólar</Link>
-        <Link href="/xrp-euro">XRP para Euro</Link>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <h2 className="font-bold text-lg">Commodities</h2>
-        <Link href="/ouro">Cotação Ouro em Real</Link>
-        <Link href="/ouro-dolar">Cotação Ouro em Dólar</Link>
-        <Link href="/ouro-euro">Cotação Ouro em Libra</Link>
-        <Link href="/prata">Cotação Prata em Real</Link>
-        <Link href="/prata-dolar">Cotação Prata em Dólar</Link>
-        <Link href="/prata-euro">Cotação Prata em Libra</Link>
-      </div>
-    </div>
+      <section className="border-y-[2.5px] border-ink bg-white">
+        <div className="relative mx-auto max-w-6xl px-4 pt-12 pb-14 sm:px-8">
+          {["moedas", "cripto", "metais", "cotacoes"].map((id) => (
+            <span key={id} id={id} className="absolute top-0 scroll-mt-4" />
+          ))}
+          <QuoteGrid items={items} />
+        </div>
+      </section>
+    </>
   );
 }
+
+const Sticker = ({
+  item,
+  className,
+}: {
+  item: QuoteItem;
+  className: string;
+}) => (
+  <Link
+    href={`/${item.slug}`}
+    className={`w-[250px] shrink-0 snap-start rounded-[22px] border-[2.5px] border-ink p-5 shadow-pop transition hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-pop-hover max-md:rotate-0 md:absolute md:p-6 ${className}`}
+  >
+    <Badge symbol={item.symbol} color={item.color} size="lg" />
+    <span className="mt-3 block text-lg font-semibold">
+      {item.name} → {item.quoteName}
+    </span>
+    <span className="block text-4xl leading-tight font-extrabold tracking-[-0.03em] whitespace-nowrap">
+      {item.value ?? "—"}
+    </span>
+    <ChangePill pct={item.pct} suffix=" hoje" className="mt-2 text-[15px]" />
+  </Link>
+);

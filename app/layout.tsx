@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Lato, Honk } from "next/font/google";
+import { Bricolage_Grotesque, Honk } from "next/font/google";
 import "./globals.css";
 import { AdSense } from "./shared/components/AdSense";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Header } from "./shared/components/Header";
+import { Footer } from "./shared/components/Footer";
 
-const latoSans = Lato({
-  variable: "--font-lato-sans",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["100", "300", "400", "700", "900"],
+  weight: ["400", "600", "800"],
 });
 
-const honkSans = Honk({
-  variable: "--font-honk-sans",
+const honk = Honk({
+  variable: "--font-honk-face",
   subsets: ["latin"],
 });
 
@@ -49,16 +51,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={`${bricolage.variable} ${honk.variable}`}>
       <head>
         <AdSense />
       </head>
-      <body className={`${latoSans.variable} ${honkSans.variable} antialiased`}>
-        <div className="h-full w-full flex flex-row justify-center p-6">
-          <main className="w-full md:max-w-xl flex flex-col">
-            <span className={`${honkSans.className} text-4xl`}>HOOOJE</span>
-            {children}
-          </main>
+      <body className="antialiased">
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
         </div>
       </body>
       <GoogleAnalytics gaId={process.env.G_ID || ""} />
