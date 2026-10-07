@@ -139,7 +139,7 @@ export const pairs: Pair[] = [
   },
   {
     slug: "bolivar-venezuelano",
-    code: "THB-BRL",
+    code: "VEF-BRL",
     name: "Bolívar Venezuelano",
     article: "do",
     quote: "BRL",
@@ -392,7 +392,7 @@ export const pairs: Pair[] = [
   },
   {
     slug: "dolar-libra",
-    code: "EUR-GBP",
+    code: "USD-GBP",
     name: "Dólar",
     article: "do",
     quote: "GBP",
@@ -422,7 +422,7 @@ export const pairs: Pair[] = [
   },
   {
     slug: "dolar-taiuanes",
-    code: "TRY-BRL",
+    code: "TWD-BRL",
     name: "Dólar Taiuanês",
     article: "do",
     quote: "BRL",
@@ -560,7 +560,7 @@ export const pairs: Pair[] = [
   },
   {
     slug: "franco-suico-dolar",
-    code: "CAD-USD",
+    code: "CHF-USD",
     name: "Franco Suíço",
     article: "do",
     quote: "USD",
@@ -772,7 +772,7 @@ export const pairs: Pair[] = [
   },
   {
     slug: "ouro-euro",
-    code: "XAG-EUR",
+    code: "XAU-EUR",
     name: "Onça de Ouro",
     article: "da",
     quote: "EUR",
@@ -1010,7 +1010,7 @@ export const pairs: Pair[] = [
   },
   {
     slug: "rublo-dolar",
-    code: "RUB-EUR",
+    code: "RUB-USD",
     name: "Rublo",
     article: "do",
     quote: "USD",
