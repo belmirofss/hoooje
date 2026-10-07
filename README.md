@@ -3,6 +3,10 @@ Link: https://hoooje.vercel.app/
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Quotes API key
+
+Quotes come from [AwesomeAPI](https://docs.awesomeapi.com.br/). Without a key it rate-limits per IP, and Vercel's IPs are shared, so requests fail with HTTP 429 and every quote shows "—". Create a free key at [awesomeapi.com.br](https://awesomeapi.com.br) and set it as the `AWESOMEAPI_TOKEN` environment variable (Vercel → Project → Settings → Environment Variables), then redeploy.
+
 ## Getting Started
 
 First, run the development server:

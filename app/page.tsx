@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { fetchCurrencies } from "./shared/api/fetchCurrency";
+import { fetchQuotes } from "./shared/api/fetchCurrency";
 import { Badge, ChangePill, QuoteItem } from "./shared/components/QuoteCard";
 import { QuoteGrid } from "./shared/components/QuoteGrid";
 import { SearchBox } from "./shared/components/SearchBox";
@@ -28,7 +28,7 @@ const ordered = [...pairs].sort(
 );
 
 export default async function Home() {
-  const quotes = await fetchCurrencies(ordered.map((pair) => pair.code));
+  const quotes = await fetchQuotes();
   const items = ordered.map((pair) => toQuoteItem(pair, quotes[pair.code]));
   const bySlug = Object.fromEntries(items.map((item) => [item.slug, item]));
   const updatedAt = quotes["USD-BRL"]?.timestamp;

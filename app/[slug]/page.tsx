@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  fetchCurrencies,
-  fetchCurrency,
-  fetchHistory,
-} from "../shared/api/fetchCurrency";
+import { fetchHistory, fetchQuotes } from "../shared/api/fetchCurrency";
 import { Converter } from "../shared/components/Converter";
 import { HistoryChart } from "../shared/components/HistoryChart";
 import { Badge, ChangePill, QuoteCard } from "../shared/components/QuoteCard";
@@ -45,11 +41,11 @@ export default async function QuotePage({ params }: Props) {
   if (!pair) notFound();
 
   const related = relatedPairs(pair);
-  const [quote, history, relatedQuotes] = await Promise.all([
-    fetchCurrency(pair.code),
+  const [quotes, history] = await Promise.all([
+    fetchQuotes(),
     fetchHistory(pair.code),
-    fetchCurrencies(related.map((other) => other.code)),
   ]);
+  const quote = quotes[pair.code];
 
   const quoteName = QUOTE_NAMES[pair.quote];
   const fmt = (value: string | number) =>
@@ -178,7 +174,7 @@ export default async function QuotePage({ params }: Props) {
             {related.map((other) => (
               <QuoteCard
                 key={other.slug}
-                item={toQuoteItem(other, relatedQuotes[other.code])}
+                item={toQuoteItem(other, quotes[other.code])}
               />
             ))}
           </div>
